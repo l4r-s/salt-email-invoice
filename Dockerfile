@@ -1,5 +1,10 @@
-FROM python:alpine
-WORKDIR /app
-COPY . /app
-RUN pip3 install requirements.txt
-CMD python /app/salt-invoices.py
+FROM python:3
+
+WORKDIR /usr/src/app
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD [ "python", "./salt-invoices.py" ]
