@@ -1,13 +1,17 @@
 import pickle
 import requests
+from datetime import datetime  
+from datetime import timedelta  
 from lxml import html
 import os
+import time
 import email, smtplib, ssl
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+SLEEP = os.environ['SLEEP']
 USERNAME = os.environ['SALT_USERNAME']
 PASSWORD = os.environ['SALT_PASSWORD']
 
@@ -131,4 +135,8 @@ def main():
         print("Sending Mail...")
         sendMail(pdf)
 if __name__ == '__main__':
-    main()
+    while True:
+        main()
+        print("Goint to sleep for " + SLEEP + " seconds, until:")
+        print(datetime.now() + timedelta(seconds=int(SLEEP)))
+        time.sleep(int(SLEEP))

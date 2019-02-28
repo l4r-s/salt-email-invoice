@@ -7,6 +7,7 @@ This script downloads and emails all invoices which are not currently in the loc
 A cronjob with docker is the preffered way to use this script. The following evironment variables need to be defined:
 
 ~~~bash
+export SLEEP="43200" # seconds between the next check (default: 12h)
 export SALT_USERNAME="Your-salt.ch-Username"
 export SALT_PASSWORD="Your-salt.ch-Password"
 export SMTP_USERNAME="Your-SMTP-Server-Username"
