@@ -1,4 +1,4 @@
-bills.txt
+data/bills.txt
 .vscode/*
 venv/
 tests/envs.list.private

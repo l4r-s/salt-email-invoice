@@ -10,6 +10,7 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from pathlib import Path
 
 SLEEP = os.environ['SLEEP']
 USERNAME = os.environ['SALT_USERNAME']
@@ -25,6 +26,8 @@ SMTP_RECEIVER = os.environ['SMTP_RECEIVER']
 LOGIN_URL_BASE = "https://sessions.salt.ch"
 URL = "https://myaccount.salt.ch/en/bills/"
 DOWNLOAD_URL = "https://myaccount.salt.ch/en/bills/pdf/"
+
+DATAPATH = "data/"
 
 
 def diff(first, second):
@@ -43,7 +46,7 @@ def sendMail(serial, subject, body):
     message.attach(MIMEText(body, "plain"))
 
     if serial != False:
-        filename = serial + ".pdf"
+        filename = DATAPATH + serial + ".pdf"
         # Open PDF file in binary mode
         with open(filename, "rb") as attachment:
             # Add file as application/octet-stream
@@ -118,8 +121,13 @@ def main():
         serialNumber = data[4]
         date = data[5]
         bills.extend([serialNumber])
-    with open("bills.txt", "rb") as fp:
-        localBills = pickle.load(fp)
+
+    datafile = Path(DATAPATH + "bills.txt")
+    if datafile.exists():
+        with open(DATAPATH + "bills.txt", "rb") as fp:
+            localBills = pickle.load(fp)
+    else:
+        localBills = []
 
     if len(bills) == 0:
         print("Error: no online bills found!")
@@ -131,7 +139,8 @@ def main():
     print(len(bills))
     print("Local Bills:")
     print(len(localBills))
-    with open("bills.txt", "wb") as fp:
+
+    with open(DATAPATH + "bills.txt", "wb") as fp:
         pickle.dump(bills, fp)
 
     print("Serial not in localBills:")
@@ -139,13 +148,15 @@ def main():
     print(download)
     #downloading pdf
     for pdf in download:
-        with open(pdf + ".pdf", "wb") as file:
+        with open(DATAPATH + pdf + ".pdf", "wb") as file:
             response = session_requests.get(DOWNLOAD_URL + pdf + "/2019-01-01") # the date gets ignored, it is used by salt to give a real client a file name when downloading
             file.write(response.content)
         print("Sending Mail...")
         subject = "Salt Invoice from bot"
         body = "Attached you can finde the latest invoice from salt."
         sendMail(pdf, subject, body)
+
+
 if __name__ == '__main__':
     while True:
         main()
