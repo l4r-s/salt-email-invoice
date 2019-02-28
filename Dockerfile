@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 RUN rm -rf data/bills.txt
 
-CMD [ "python", "./salt-invoices.py" ]
+CMD [ "python","-u","./salt-invoices.py" ]
