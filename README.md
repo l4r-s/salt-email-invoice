@@ -4,16 +4,23 @@ This script downloads and emails all invoices which are not currently in the loc
 
 ## Usage
 
-A cronjob with docker is the preffered way to use this script. The following evironment variables need to be defined:
+The following evironment variables need to be defined:
 
 ~~~bash
-export SLEEP="43200" # seconds between the next check (default: 12h)
-export SALT_USERNAME="Your-salt.ch-Username"
-export SALT_PASSWORD="Your-salt.ch-Password"
-export SMTP_USERNAME="Your-SMTP-Server-Username"
-export SMTP_PASSWORD="Your-SMTP-Server-Password"
-export SMTP_HOST="Your-SMTP-Servername"
-export SMTP_PORT="Your-SMTP-Port" # usaually: 465
-export SMTP_SENDER="FROM-Address"
-export SMTP_RECEIVER="Receiver-EMail-Address"
+$ cat tests/env.list.example
+SLEEP=43200
+SALT_USERNAME=username
+SALT_PASSWORD=12345
+SMTP_USERNAME=admin@test.com
+SMTP_PASSWORD=12345
+SMTP_HOST=mail.test.com
+SMTP_PORT=465
+SMTP_SENDER=bot@test.com
+SMTP_RECEIVER=receiver@test.com
+~~~
+
+Run the container with:
+
+~~~bash
+docker run -it --env-file tests/envs.list.private l4rs/salt-email-invoice:latest
 ~~~
