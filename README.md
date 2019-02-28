@@ -22,5 +22,5 @@ SMTP_RECEIVER=receiver@test.com
 Run the container with:
 
 ~~~bash
-docker run -it --env-file tests/envs.list.private l4rs/salt-email-invoice:latest
+docker run -d --env-file tests/envs.list.example -v /local/path:/usr/src/app/data l4rs/salt-email-invoice:latest
 ~~~
