@@ -154,7 +154,7 @@ def main():
             response = session_requests.get(DOWNLOAD_URL + pdf + "/2019-01-01") # the date gets ignored, it is used by salt to give a real client a file name when downloading
             file.write(response.content)
             # only take the first page, which is the invoice
-            pages_to_keep = [0] # page numbering starts from 0
+            pages_to_keep = [0, 1] # page numbering starts from 0
             infile = PdfFileReader(path, 'rb')
             output = PdfFileWriter()
             for i in pages_to_keep:
@@ -164,7 +164,7 @@ def main():
                 output.write(f)
         print("Sending Mail...")
         subject = "Salt Invoice from bot"
-        body = "Attached you can finde the latest invoice from salt."
+        body = "Attached you can find the latest invoice from salt."
         sendMail(pdf, subject, body)
 
 if __name__ == '__main__':
