@@ -32,7 +32,9 @@ LOGIN_URL_BASE = "https://sessions.salt.ch"
 URL = "https://myaccount.salt.ch/en/bills/"
 DOWNLOAD_URL = "https://myaccount.salt.ch/en/bills/pdf/"
 
-DATAPATH = "data/"
+DATAPATH = os.environ.get('DATAPATH')
+if not DATAPATH:
+    DATAPATH = 'data/'
 
 
 def diff(first, second):
