@@ -1,17 +1,21 @@
-import pickle
-import requests
-from datetime import datetime  
-from datetime import timedelta  
-from lxml import html
 import os
 import time
 import email, smtplib, ssl
+import pickle
+import requests
+
+from lxml import html
+from pathlib import Path
+
+from datetime import datetime
+from datetime import timedelta
+
+from PyPDF2 import PdfFileWriter, PdfFileReader
+
 from email import encoders
 from email.mime.base import MIMEBase
-from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from pathlib import Path
-from PyPDF2 import PdfFileWriter, PdfFileReader
+from email.mime.multipart import MIMEMultipart
 
 SLEEP = os.environ['SLEEP']
 USERNAME = os.environ['SALT_USERNAME']
@@ -98,7 +102,7 @@ def main():
 
     # Perform login
     result = session_requests.post(LOGIN_URL_BASE + authenticity_token , data = payload, headers = dict(referer = LOGIN_URL_BASE + "/cas/login"))
-    
+
     if result.status_code != 200:
         subject = "Error: Salt invoice bot could not login!"
         print(subject)
