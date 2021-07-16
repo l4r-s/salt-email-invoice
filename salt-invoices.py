@@ -17,7 +17,7 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-SLEEP = os.environ['SLEEP']
+SLEEP = os.environ.get('SLEEP')
 USERNAME = os.environ['SALT_USERNAME']
 PASSWORD = os.environ['SALT_PASSWORD']
 
@@ -172,8 +172,12 @@ def main():
         sendMail(pdf, subject, body)
 
 if __name__ == '__main__':
-    while True:
+    if not SLEEP:
         main()
-        print("Goint to sleep for " + SLEEP + " seconds, until:")
-        print(datetime.now() + timedelta(seconds=int(SLEEP)))
-        time.sleep(int(SLEEP))
+
+    if SLEEP:
+        while True:
+            main()
+            print("Goint to sleep for " + SLEEP + " seconds, until:")
+            print(datetime.now() + timedelta(seconds=int(SLEEP)))
+            time.sleep(int(SLEEP))
